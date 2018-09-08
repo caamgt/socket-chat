@@ -22,7 +22,8 @@ socket.on('connect', function() {
     // Comunicarme con el backEnd.
     // Notificamos quein entra al chat.
     socket.emit('entrarChat', usuario, function(resp) {
-        console.log('Usuarios conectados', resp);
+        //console.log('Usuarios conectados', resp);
+        renderizarUsuarios(resp);
     });
 
 });
@@ -45,13 +46,18 @@ socket.on('disconnect', function() {
 
 // Escuchar información
 socket.on('crearMensaje', function(mensaje) {
-    console.log('Servidor:', mensaje);
+    //console.log('Servidor:', mensaje);
+    // false, es para que le aplique el estilo segun la condicion en el archivo socket-chat-jquery.js
+    renderizarMensajes(mensaje, false);
+
+    scrollBottom();
 });
 
 // Escuchar cambios de usuarios
 // cuando un usuario entra o sale del chat
 socket.on('listaPersona', function(personas) {
     console.log(personas);
+    renderizarUsuarios(personas);
 });
 
 // Mensajes privados.   hay que ir a la parte del servidor (socket.js) para que emita.

@@ -32,13 +32,15 @@ io.on('connection', (client) => {
     });
 
     // En la data viene toda la informacion
-    client.on('crearMensaje', (data) => {
+    client.on('crearMensaje', (data, callback) => {
         let persona = usuarios.getPersona(client.id);
         let mensaje = crearMensaje(persona.nombre, data.mensaje);
 
         // Emitir a todos los usuarios el nuemensaje, siempre que esten en la misma sala
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
 
+
+        // Despues de notificar a todos, regresa el mensaje.
         callback(mensaje);
     });
 
